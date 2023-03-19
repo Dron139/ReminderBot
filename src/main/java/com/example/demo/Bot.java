@@ -24,8 +24,8 @@ import java.util.*;
 class bot extends TelegramLongPollingBot{
 
 	//Reminder reminder = new Reminder();
-	List<Reminder.reminder_task> reminder_list = new ArrayList<>();
-	String Text = new String();
+
+
 	public static void main(String[] args) throws TelegramApiException {
 		bot Bot = new bot();
 		TelegramBotsApi telegrambotapi = new TelegramBotsApi(DefaultBotSession.class);
@@ -34,7 +34,7 @@ class bot extends TelegramLongPollingBot{
 		//Timer timer = new Timer();
 		//timer.schedule(new Reminder(),);
 	}
-
+	Reminder tmp = new Reminder();
 	@Override
 	public void onUpdateReceived(Update update) {
 
@@ -44,11 +44,14 @@ class bot extends TelegramLongPollingBot{
 			String answer = update.getMessage().getText();
 			if(answer.contains("/r"))
 			{
+				Reminder reminder = new Reminder();
+				//Reminder reminder
 				System.out.println(answer);
 				//LocalDateTime d = LocalDateTime.parse(answer.replace("/r ", ""));
 				DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				try {
 					reminder.task.date = dateFormatter .parse(answer.replace("/r ", ""));
+					tmp =reminder;
 					//reminder.reminder_task(message.getChatId(),date,answer);
 				} catch (ParseException e) {
 					throw new RuntimeException(e);
@@ -56,6 +59,8 @@ class bot extends TelegramLongPollingBot{
 			}
 			else if (answer.contains("/text")){
 				Timer timer = new Timer();
+				Reminder reminder = new Reminder();
+				reminder = tmp;
 				//	System.out.println(date);
 				//Use this if you want to execute it once
 				reminder.task.ChatId = update.getMessage().getChatId();
@@ -75,8 +80,6 @@ class bot extends TelegramLongPollingBot{
 
 	}
 
-
-
 	@Override
 	public String getBotUsername() {
 		return "My13971_bot";
@@ -86,7 +89,7 @@ class bot extends TelegramLongPollingBot{
 		return "5449751657:AAEOgTyf1fd6MSHCF5Ak3PDdOQuVowSS7-A";
 	}
 
-	Reminder reminder = new Reminder();
+
 	public class Reminder extends TimerTask {
 
 		reminder_task task = new reminder_task();
@@ -94,15 +97,6 @@ class bot extends TelegramLongPollingBot{
 			Long ChatId;
 			Date date;
 			String message;
-		}
-		void reminder_task(Long ChatId, Date date, String message)  {
-			//	Date d = new Date();
-
-
-			task.ChatId = ChatId;
-			task.message = message;
-
-			reminder_list.add(task);
 		}
 
 		 void send_reminder (reminder_task task) {
@@ -118,9 +112,9 @@ class bot extends TelegramLongPollingBot{
 		}
 		public void  run()
 		{
-
+			reminder_task Task = task;
 		//	reminder_list.stream().filter(x -> x.date.isAfter(LocalDateTime.now())).forEach(x ->send_reminder(x));
-			send_reminder (task);
+			send_reminder (Task);
 		}
 	}
 
